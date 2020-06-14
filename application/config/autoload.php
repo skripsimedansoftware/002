@@ -59,7 +59,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 $autoload['libraries'] = array(
-	'form_validation', 'session', 'user_agent',
+	'form_validation', 'session', 'user_agent', 'database',
 
 	'template'
 );
@@ -95,6 +95,8 @@ $autoload['drivers'] = array();
 */
 $autoload['helper'] = array(
 	'cookie', 'date', 'directory', 'email', 'html', 'language', 'string', 'text', 'url',
+
+	'pengguna'
 );
 
 /*
@@ -123,7 +125,7 @@ $autoload['config'] = array();
 | "codeigniter_lang.php" would be referenced as array('codeigniter');
 |
 */
-$autoload['language'] = array();
+$autoload['language'] = array('calendar');
 
 /*
 | -------------------------------------------------------------------
@@ -138,4 +140,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array();
+$autoload['model'] = array('pengguna_model', 'transportasi_model', 'pesanan_transportasi_model');

@@ -12,7 +12,7 @@ class Template
 
 	public function pengguna($page = '', $data = array())
 	{
-		$data['page'] = $this->ci->load->view('pengguna/'.$page, $data, TRUE);
+		$data['page'] = $this->ci->load->view($page, $data, TRUE);
 		$this->ci->load->view('pengguna/base', $data);
 	}
 }
