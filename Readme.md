@@ -28,4 +28,4 @@ password : petani
 
 ## Database Relationship
 
-![Database Design](database.png)
+![Database Design](database.PNG)
