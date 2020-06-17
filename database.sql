@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2020 at 09:46 PM
+-- Generation Time: Jun 16, 2020 at 02:03 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -45,9 +45,9 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`id`, `role`, `email`, `seluler`, `username`, `password`, `nama_lengkap`, `alamat`, `status`) VALUES
-(1, 'admin', 'admin@aplikasi-angkutan.medansoftware.com', NULL, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', NULL, 'aktif'),
-(2, 'sopir', 'sopir@aplikasi-angkutan.medansoftware.com', '082167368585', NULL, 'd180e8e96956e056f23a05fadda0e2bd', 'Sopir', NULL, 'aktif'),
-(3, 'petani', 'petani@aplikasi-angkutan.medansoftware.com', '082167368585', NULL, 'd180e8e96956e056f23a05fadda0e2bd', 'Petani', NULL, 'aktif');
+(1, 'admin', 'admin@aplikasi-angkutan.medansoftware.com', '082167368585', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', NULL, 'aktif'),
+(2, 'sopir', 'sopir@aplikasi-angkutan.medansoftware.com', '082167368586', 'sopir', 'd386c1221d25de3e8eb78dd5e73a8aac', 'Sopir', NULL, 'aktif'),
+(3, 'petani', 'petani@aplikasi-angkutan.medansoftware.com', '082167368587', 'petani', 'd180e8e96956e056f23a05fadda0e2bd', 'Petani', NULL, 'aktif');
 
 -- --------------------------------------------------------
 
@@ -65,7 +65,19 @@ CREATE TABLE `pesanan_transportasi` (
   `penjemputan` tinytext NOT NULL,
   `tanggal_pemesanan` datetime NOT NULL,
   `catatan` tinytext DEFAULT NULL,
-  `status` enum('pesan','konfirmasi','batal','proses','selesai') NOT NULl
+  `status` enum('pesan','konfirmasi','batal','proses','selesai') NOT NULL DEFAULT 'pesan'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `setting`
+--
+
+CREATE TABLE `setting` (
+  `id` int(3) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

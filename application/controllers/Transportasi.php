@@ -6,7 +6,10 @@ class Transportasi extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		//Do your magic here
+		if (empty($this->session->userdata('pengguna')))
+		{
+			redirect(base_url('pengguna/daftar'),'refresh');
+		}
 	}
 
 	public function index()
@@ -216,7 +219,8 @@ class Transportasi extends CI_Controller {
 
 			if (!empty($pesanan_transportasi))
 			{
-				$this->pesanan_transportasi_model->update(array('status' => $status), array('id' => $pesanan_transportasi_id));
+				$do_it = FALSE;
+
 				switch ($status)
 				{
 					/**
@@ -225,7 +229,8 @@ class Transportasi extends CI_Controller {
 					case 'batal':
 						if (aktif_sesi()['role'] == 'admin' OR aktif_sesi()['id'] == $pesanan_transportasi['pemesan'])
 						{
-							$this->session->set_flashdata('flash_message', array('status' => 'warning', 'message' => 'Pesanan anda telah dibatalkan'));
+							$do_it = TRUE;
+							$this->session->set_flashdata('flash_message', array('status' => 'warning', 'message' => 'Pesanan atas nama <b>'.$pesanan_transportasi['nama_lengkap'].'</b> telah dibatalkan'));
 						}
 						else
 						{
@@ -239,7 +244,8 @@ class Transportasi extends CI_Controller {
 					case 'konfirmasi':
 						if (aktif_sesi()['role'] == 'admin')
 						{
-							$this->session->set_flashdata('flash_message', array('status' => 'primary', 'message' => 'Pesanan anda telah dikonfirmasi'));
+							$do_it = TRUE;
+							$this->session->set_flashdata('flash_message', array('status' => 'primary', 'message' => 'Pesanan atas nama <b>'.$pesanan_transportasi['nama_lengkap'].'</b> telah dikonfirmasi'));
 						}
 						else
 						{
@@ -262,7 +268,8 @@ class Transportasi extends CI_Controller {
 
 							if ($transportasi['status'] == 'tersedia')
 							{
-								$this->transportasi_model->update(array('status' => 'tidak-tersedia', 'id' => $transportasi['id']));
+								$do_it = TRUE;
+								$this->transportasi_model->update(array('status' => 'tidak-tersedia'), array('id' => $transportasi['id']));
 								$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Pesanan sedang di proses, status transportasi diubah menjadi tidak tersedia'));
 							}
 							else
@@ -281,13 +288,42 @@ class Transportasi extends CI_Controller {
 					 * yang diizinkan mengubah status pesanan menjadi "selesai" hanya admin dan sopir yang dipesan
 					 */
 					case 'selesai':
-						$this->transportasi_model->update(array('status' => 'tersedia', 'id' => $pesanan_transportasi['transportasi_id']));
-						$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Pesanan telah selesai'));
+
+						$transportasi = $this->transportasi_model->view($pesanan_transportasi['transportasi_id']);
+
+						if (!empty($transportasi))
+						{
+							if (aktif_sesi()['role'] == 'sopir' && aktif_sesi()['id'] !== $transportasi['pengemudi'])
+							{
+								$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Anda bukan sopir kendaraan ini'));
+							}
+
+							if ($transportasi['status'] == 'tidak-tersedia')
+							{
+								$do_it = TRUE;
+								$this->transportasi_model->update(array('status' => 'tersedia'), array('id' => $pesanan_transportasi['transportasi_id']));
+								$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Pesanan sudah sampai, status transportasi diubah menjadi tersedia kembali'));
+							}
+							else
+							{
+								$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Silahkan hubungi admin karena status anda masih belum tesedia, kemungkinan ada pesanan yang belum diselesaikan'));
+							}
+						}
+						else
+						{
+							show_404();
+						}
+						
 					break;
 					
 					default:
 						$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Error'));
 					break;
+				}
+
+				if ($do_it == TRUE)
+				{
+					$this->pesanan_transportasi_model->update(array('status' => $status), array('id' => $pesanan_transportasi_id));
 				}
 			}
 			else
@@ -299,7 +335,7 @@ class Transportasi extends CI_Controller {
 		}
 		else
 		{
-
+			show_error('Request not match', 500 , 'Internal server error');
 		}
 	}
 

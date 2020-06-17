@@ -68,21 +68,16 @@
 							?>
 						</td>
 						<td>
-							<?php
-							// tidak di izinkan membatalkan pesanan jika statusnya seperti berikut
-							if (!in_array($data['status'], ['konfirmasi', 'proses', 'selesai', 'batal']))
-							{
-								?>
-								<a class="btn btn-danger" href="<?php echo base_url('transportasi/ubah_status_pesanan/'.$data['id'].'/'.'batal'.'?redirect_to='.base_url('transportasi/pesanan_saya')) ?>">Batalkan Pesanan</a>
-								<?php
-							}
-							else
-							{
-								?>
-								<center>-</center>
-								<?php
-							}
-							?>
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle" type="button" id="ubah_status_pesanan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Ubah Status Pesanan &nbsp;<span class="caret"></span></button>
+								<ul class="dropdown-menu" aria-labelledby="ubah_status_pesanan">
+									<li><a href="<?php echo base_url('transportasi/ubah_status_pesanan/'.$data['id'].'/'.'konfirmasi'.'?redirect_to='.base_url('transportasi/pesanan')) ?>">Sudah dikonfirmasi</a></li>
+									<li><a href="<?php echo base_url('transportasi/ubah_status_pesanan/'.$data['id'].'/'.'proses'.'?redirect_to='.base_url('transportasi/pesanan')) ?>">Sedang diproses</a></li>
+									<li><a href="<?php echo base_url('transportasi/ubah_status_pesanan/'.$data['id'].'/'.'selesai'.'?redirect_to='.base_url('transportasi/pesanan')) ?>">Sudah selesai</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="<?php echo base_url('transportasi/ubah_status_pesanan/'.$data['id'].'/'.'batal'.'?redirect_to='.base_url('transportasi/pesanan')) ?>">Batalkan Pesanan</a></li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 					<?php } ?>

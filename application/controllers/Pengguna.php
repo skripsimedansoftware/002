@@ -11,7 +11,7 @@ class Pengguna extends CI_Controller {
 		{
 			if (empty($this->session->userdata('pengguna')))
 			{
-				// redirect(base_url('pengguna/daftar'),'refresh');
+				redirect(base_url('pengguna/daftar'),'refresh');
 			}
 		}
 	}
@@ -21,10 +21,14 @@ class Pengguna extends CI_Controller {
 		$data['sub_judul'] = 'Beranda';
 		switch (aktif_sesi()['role']) {
 			case 'sopir':
+				$data['sub_judul'] = 'Pesanan Transportasi';
+				$data['pesanan_transportasi'] = $this->pengguna_model->pesanan_transportasi(aktif_sesi()['id']);
 				$this->template->pengguna('pengguna/beranda-sopir', $data);
 			break;
 
 			case 'petani':
+				$data['upah_angkut'] = $this->setting_model->get_upah_angkut();
+				$data['harga_sawit'] = $this->setting_model->get_harga_sawit();
 				$this->template->pengguna('pengguna/beranda-petani', $data);
 			break;
 			
@@ -99,12 +103,14 @@ class Pengguna extends CI_Controller {
 			{
 				if ($this->input->method(TRUE) == 'POST')
 				{
+					$password = (!empty($this->input->post('password')))?md5($this->input->post('password')):$pengguna['password'];
+
 					$this->pengguna_model->update(array(
 						'role' => $this->input->post('role'),
 						'email' => $this->input->post('email'),
 						'seluler' => $this->input->post('seluler'),
 						'username' => $this->input->post('username'),
-						'password' => (!empty($this->input->post('password')))?md5($this->input->post('password')):$pengguna['password'],
+						'password' => $password,
 						'nama_lengkap' => $this->input->post('nama_lengkap'),
 						'alamat' => $this->input->post('alamat'),
 						'status' => $this->input->post('status')
@@ -206,15 +212,30 @@ class Pengguna extends CI_Controller {
 			{
 				$masuk = $this->pengguna_model->sign_in($this->input->post('identity'), $this->input->post('password'));
 
-				if ($masuk)
+				switch ($masuk['status'])
 				{
-					$this->session->set_userdata('pengguna', $masuk['id']);
-					redirect(base_url(),'refresh');
-				}
-				else
-				{
-					$this->session->set_flashdata('masuk', 'Email / Kata Sandi yang digunakan tidak sesuai');
-					redirect(base_url('pengguna/masuk'),'refresh');
+					case 'aktif':
+						if ($masuk)
+						{
+							$this->session->set_userdata('pengguna', $masuk['id']);
+							redirect(base_url(),'refresh');
+						}
+						else
+						{
+							$this->session->set_flashdata('masuk', 'Email / Kata Sandi yang digunakan tidak sesuai');
+							redirect(base_url('pengguna/masuk'),'refresh');
+						}
+					break;
+
+					case 'non-aktif':
+						$this->session->set_flashdata('masuk', 'Akun anda tidak aktif, silahkan hubungi admin');
+						redirect(base_url('pengguna/masuk'),'refresh');
+					break;
+					
+					default:
+						$this->session->set_flashdata('masuk', 'Akun anda diblokir, silahkan hubungi admin');
+						redirect(base_url('pengguna/masuk'),'refresh');
+					break;
 				}
 			}
 			else

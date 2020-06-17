@@ -109,10 +109,16 @@
 			<!-- sidebar menu: : style can be found in sidebar.less -->
 			<ul class="sidebar-menu" data-widget="tree" style="margin-top: 2%;">
 				<li><a href="<?php echo base_url() ?>"><i class="fa fa-home"></i> <span>Beranda</span></a></li>
-				<li><a href="<?php echo base_url('pengguna/semua') ?>"><i class="fa fa-users"></i> <span>Pengguna</span></a></li>
-				<li><a href="<?php echo base_url('transportasi') ?>"><i class="fa fa-car"></i> <span>Transportasi</span></a></li>
-				<li><a href="<?php echo base_url('transportasi/pesan') ?>"><i class="fa fa-truck"></i> <span>Pesan Transportasi</span></a></li>
-				<li><a href="<?php echo base_url('transportasi/pesanan_saya') ?>"><i class="fa fa-shopping-cart"></i> <span>Pesanan Saya</span></a></li>
+				<?php if (aktif_sesi()['role'] == 'admin') {?>
+					<li><a href="<?php echo base_url('pengguna/semua') ?>"><i class="fa fa-users"></i> <span>Pengguna</span></a></li>
+					<li><a href="<?php echo base_url('transportasi') ?>"><i class="fa fa-car"></i> <span>Transportasi</span></a></li>
+					<li><a href="<?php echo base_url('setting') ?>"><i class="fa fa-cogs"></i> <span>Pengaturan</span></a></li>
+				<?php } ?>
+				<?php if (aktif_sesi()['role'] == 'admin' OR aktif_sesi()['role'] == 'petani') {?>
+					<li class="header">Transportasi</li>
+					<li><a href="<?php echo base_url('transportasi/pesan') ?>"><i class="fa fa-truck"></i> <span>Pesan Transportasi</span></a></li>
+					<li><a href="<?php echo base_url('transportasi/pesanan_saya') ?>"><i class="fa fa-shopping-cart"></i> <span>Pesanan Saya</span></a></li>
+				<?php } ?>
 			</ul>
 		</section>
 		<!-- /.sidebar -->

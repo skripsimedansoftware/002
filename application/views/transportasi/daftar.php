@@ -1,5 +1,5 @@
 <?php 
-if (!empty($transportasi))
+if (!empty($transportasi)) {
 foreach ($transportasi as $data){?>
 <div class="col-md-4">
 	<div class="box box-widget widget-user">
@@ -51,4 +51,11 @@ foreach ($transportasi as $data){?>
 		</div>
 	</div>
 </div>
-<?php } ?>
+<?php } 
+}
+else {
+	?>
+	<div class="alert alert-danger">Maaf, ketersediaan transportasi sudah habis</div>
+	<?php
+}
+?>

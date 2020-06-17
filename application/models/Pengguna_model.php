@@ -133,6 +133,36 @@ class Pengguna_model extends CI_Model {
 
 		return FALSE;
 	}
+
+	public function pesanan_transportasi($sopir_id = NULL)
+	{
+		$kendaraan_pengemudi = $this->db->get_where('transportasi', array('pengemudi' => $sopir_id));
+
+		$transportasi = array();
+
+		if ($kendaraan_pengemudi->num_rows() > 0) 
+		{
+			foreach ($kendaraan_pengemudi->result_array() as $value) 
+			{
+				array_push($transportasi, $value['id']);
+			}
+		}
+
+		if (!empty($transportasi)) 
+		{			
+			$this->db->where_in('transportasi_id', $transportasi);
+			$this->db->where_in('status', array('konfirmasi', 'proses', 'selesai'));
+			$pesanan_transportasi = $this->db->get('pesanan_transportasi');
+
+			if ($pesanan_transportasi->num_rows() > 0)
+			{
+				return $pesanan_transportasi->result_array();
+			}
+		}
+
+
+		return array();
+	}
 }
 
 /* End of file Pengguna_model.php */
