@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 16, 2020 at 02:03 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.27
+-- Host: localhost:3306
+-- Generation Time: Jun 15, 2020 at 04:16 PM
+-- Server version: 5.5.65-MariaDB
+-- PHP Version: 7.3.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `skripsi_2020`
+-- Database: `jasa-angkutan-kelapa-sawit`
 --
 
 -- --------------------------------------------------------
@@ -62,9 +61,10 @@ CREATE TABLE `pesanan_transportasi` (
   `nama_lengkap` varchar(80) NOT NULL,
   `seluler` varchar(15) NOT NULL,
   `jadwal_angkut` datetime NOT NULL,
+  `upah_angkut` double NOT NULL,
   `penjemputan` tinytext NOT NULL,
   `tanggal_pemesanan` datetime NOT NULL,
-  `catatan` tinytext DEFAULT NULL,
+  `catatan` tinytext,
   `status` enum('pesan','konfirmasi','batal','proses','selesai') NOT NULL DEFAULT 'pesan'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -86,8 +86,6 @@ CREATE TABLE `setting` (
 INSERT INTO `setting` (`name`, `value`) VALUES
 ('upah_angkut', '4000'),
 ('harga_sawit', '2000');
-COMMIT;
-
 
 -- --------------------------------------------------------
 
@@ -115,15 +113,6 @@ ALTER TABLE `pengguna`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pesanan_transportasi`
---
-ALTER TABLE `pesanan_transportasi`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `transportasi_id` (`transportasi_id`),
-  ADD KEY `transportasi_id_2` (`transportasi_id`),
-  ADD KEY `pemesan` (`pemesan`);
-
---
 -- Indexes for table `transportasi`
 --
 ALTER TABLE `transportasi`
@@ -139,12 +128,6 @@ ALTER TABLE `transportasi`
 --
 ALTER TABLE `pengguna`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `pesanan_transportasi`
---
-ALTER TABLE `pesanan_transportasi`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transportasi`
@@ -169,7 +152,6 @@ ALTER TABLE `pesanan_transportasi`
 ALTER TABLE `transportasi`
   ADD CONSTRAINT `transportasi_ibfk_1` FOREIGN KEY (`pengemudi`) REFERENCES `pengguna` (`id`);
 COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
