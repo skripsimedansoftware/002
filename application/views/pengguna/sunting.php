@@ -15,16 +15,19 @@
 						</div>
 					<?php
 				}
+
+				if (aktif_sesi()['role'] == 'admin') {
 				?>
-				<div class="form-group">
-					<label>Role</label>
-					<select class="form-control" name="role">
-						<option value="admin" <?php echo ($pengguna['role'] == 'admin')?'selected':'' ?>>Admin</option>
-						<option value="sopir" <?php echo ($pengguna['role'] == 'sopir')?'selected':'' ?>>Sopir</option>
-						<option value="petani" <?php echo ($pengguna['role'] == 'petani')?'selected':'' ?>>Petani</option>
-					</select>
-					<?php echo form_error('status', '<span class="help-block error">', '</span>'); ?>
-				</div>
+					<div class="form-group">
+						<label>Role</label>
+						<select class="form-control" name="role">
+							<option value="admin" <?php echo ($pengguna['role'] == 'admin')?'selected':'' ?>>Admin</option>
+							<option value="sopir" <?php echo ($pengguna['role'] == 'sopir')?'selected':'' ?>>Sopir</option>
+							<option value="petani" <?php echo ($pengguna['role'] == 'petani')?'selected':'' ?>>Petani</option>
+						</select>
+						<?php echo form_error('status', '<span class="help-block error">', '</span>'); ?>
+					</div>
+				<?php } ?>
 				<div class="form-group">
 					<label>Nama Lengkap</label>
 					<input class="form-control" type="text" name="nama_lengkap" placeholder="Nama Lengkap" value="<?php echo set_value('nama_lengkap', $pengguna['nama_lengkap']) ?>">

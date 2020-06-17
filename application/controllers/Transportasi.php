@@ -148,7 +148,7 @@ class Transportasi extends CI_Controller {
 				$this->form_validation->set_rules('seluler', 'Kontak Yang Dapat Dihubungi', 'trim|numeric|max_length[15]|required');
 				$this->form_validation->set_rules('jadwal_angkut', 'Jadwal Angkut', 'trim|required');
 				$this->form_validation->set_rules('penjemputan', 'Penjemputan', 'trim|required');
-				$this->form_validation->set_rules('beban_angkut', 'Penjemputan', 'trim|numeric|required');
+				$this->form_validation->set_rules('beban_angkut', 'Penjemputan', 'trim|numeric');
 				
 				if ($this->form_validation->run() == TRUE)
 				{
@@ -169,7 +169,7 @@ class Transportasi extends CI_Controller {
 							'penjemputan' => $this->input->post('penjemputan'),
 							'tanggal_pemesanan' => nice_date(unix_to_human(now()), 'Y-m-d H:i:s'),
 							'catatan' => $this->input->post('catatan'),
-							'upah_angkut' =>  $this->setting_model->get_upah_angkut()['value']*$this->input->post('beban_angkut'),
+							'upah_angkut' =>  (!empty($this->input->post('beban_angkut')))?$this->setting_model->get_upah_angkut()['value']*$this->input->post('beban_angkut'):0,
 							'status' => 'pesan'	
 						);
 
@@ -203,6 +203,60 @@ class Transportasi extends CI_Controller {
 			$data['sub_judul'] = 'Pesan Transportasi';
 			$data['transportasi'] = $this->transportasi_model->get_where(array('status' => 'tersedia'));
 			$this->template->pengguna('transportasi/daftar', $data);
+		}
+	}
+
+	public function sunting_pesanan($pesanan_id = NULL)
+	{
+		if (!empty($pesanan_id))
+		{
+			if ($this->input->method(TRUE) == 'POST')
+			{
+				$this->form_validation->set_rules('transportasi_id', 'Transportasi ID', 'trim|integer|required');
+				$this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'trim|required');
+				$this->form_validation->set_rules('seluler', 'Kontak Yang Dapat Dihubungi', 'trim|numeric|max_length[15]|required');
+				$this->form_validation->set_rules('jadwal_angkut', 'Jadwal Angkut', 'trim|required');
+				$this->form_validation->set_rules('penjemputan', 'Penjemputan', 'trim|required');
+				$this->form_validation->set_rules('beban_angkut', 'Penjemputan', 'trim|numeric');
+				
+				if ($this->form_validation->run() == TRUE)
+				{
+					$pesanan = $this->pesanan_transportasi_model->view($pesanan_id);
+
+					$data = array(
+						'transportasi_id' => $pesanan['transportasi_id'],
+						'pemesan' => $pesanan['pemesan'],
+						'nama_lengkap' => $this->input->post('nama_lengkap'),
+						'seluler' => $this->input->post('seluler'),
+						'jadwal_angkut' => nice_date($this->input->post('jadwal_angkut'), 'Y-m-d H:i:s'),
+						'penjemputan' => $this->input->post('penjemputan'),
+						'catatan' => $this->input->post('catatan'),
+						'upah_angkut' =>  (!empty($this->input->post('beban_angkut')))?$this->setting_model->get_upah_angkut()['value']*$this->input->post('beban_angkut'):$pesanan['status'],
+						'status' => $pesanan['status']
+					);
+
+					$update = $this->pesanan_transportasi_model->update($data, array('id' => $pesanan_id));
+					$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Pesanan berhasil diperbaharui'));
+
+					redirect(base_url('transportasi/pesanan') ,'refresh');
+				}
+				else
+				{
+					$data['sub_judul'] = 'Sunting Pesanan';
+					$data['pesanan_transportasi'] = $this->pesanan_transportasi_model->view($pesanan_id);
+					$this->template->pengguna('transportasi/sunting_pesanan', $data);
+				}
+			}
+			else
+			{
+				$data['sub_judul'] = 'Sunting Pesanan';
+				$data['pesanan_transportasi'] = $this->pesanan_transportasi_model->view($pesanan_id);
+				$this->template->pengguna('transportasi/sunting_pesanan', $data);
+			}
+		}
+		else
+		{
+			show_404();
 		}
 	}
 

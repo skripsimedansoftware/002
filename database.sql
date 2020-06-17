@@ -61,7 +61,7 @@ CREATE TABLE `pesanan_transportasi` (
   `nama_lengkap` varchar(80) NOT NULL,
   `seluler` varchar(15) NOT NULL,
   `jadwal_angkut` datetime NOT NULL,
-  `upah_angkut` double NOT NULL,
+  `upah_angkut` double DEFAULT NULL,
   `penjemputan` tinytext NOT NULL,
   `tanggal_pemesanan` datetime NOT NULL,
   `catatan` tinytext,

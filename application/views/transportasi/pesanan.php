@@ -23,6 +23,7 @@
 					<th>Kontak</th>
 					<th>Jadwal Angkut</th>
 					<th>Lokasi Angkut</th>
+					<th>Upah Angkut</th>
 					<th>Catatan</th>
 					<th>Status</th>
 					<th>Opsi</th>
@@ -37,6 +38,7 @@
 						<td><?php echo $data['seluler'] ?></td>
 						<td><?php echo lang('cal_'.strtolower(nice_date($data['jadwal_angkut'], 'l'))).', '.nice_date($data['jadwal_angkut'], 'd-m-Y | H:i A') ?></td>
 						<td><?php echo $data['penjemputan'] ?></td>
+						<td>Rp.<?php echo number_format($data['upah_angkut'], 0, ',', '.') ?></td>
 						<td><?php echo $data['catatan'] ?></td>
 						<td>
 							<?php
@@ -68,6 +70,7 @@
 							?>
 						</td>
 						<td>
+							<a class="btn btn-default" href="<?php echo base_url('transportasi/sunting_pesanan/'.$data['id']) ?>">Sunting</a>
 							<div class="dropdown">
 								<button class="btn btn-primary dropdown-toggle" type="button" id="ubah_status_pesanan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Ubah Status Pesanan &nbsp;<span class="caret"></span></button>
 								<ul class="dropdown-menu" aria-labelledby="ubah_status_pesanan">
