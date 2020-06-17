@@ -79,6 +79,16 @@ CREATE TABLE `setting` (
   `value` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `setting`
+--
+
+INSERT INTO `setting` (`name`, `value`) VALUES
+('upah_angkut', '4000'),
+('harga_sawit', '2000');
+COMMIT;
+
+
 -- --------------------------------------------------------
 
 --
