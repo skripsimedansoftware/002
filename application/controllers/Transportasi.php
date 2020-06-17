@@ -148,6 +148,7 @@ class Transportasi extends CI_Controller {
 				$this->form_validation->set_rules('seluler', 'Kontak Yang Dapat Dihubungi', 'trim|numeric|max_length[15]|required');
 				$this->form_validation->set_rules('jadwal_angkut', 'Jadwal Angkut', 'trim|required');
 				$this->form_validation->set_rules('penjemputan', 'Penjemputan', 'trim|required');
+				$this->form_validation->set_rules('beban_angkut', 'Penjemputan', 'trim|numeric|required');
 				
 				if ($this->form_validation->run() == TRUE)
 				{
@@ -168,7 +169,8 @@ class Transportasi extends CI_Controller {
 							'penjemputan' => $this->input->post('penjemputan'),
 							'tanggal_pemesanan' => nice_date(unix_to_human(now()), 'Y-m-d H:i:s'),
 							'catatan' => $this->input->post('catatan'),
-							'status' => 'pesan'
+							'upah_angkut' =>  $this->setting_model->get_upah_angkut()['value']*$this->input->post('beban_angkut'),
+							'status' => 'pesan'	
 						);
 
 						$this->pesanan_transportasi_model->create($data);

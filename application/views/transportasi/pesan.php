@@ -30,6 +30,11 @@
 					<textarea name="catatan" class="form-control" placeholder="Catatan untuk admin"><?php echo set_value('catatan') ?></textarea>
 					<?php echo form_error('catatan', '<span class="help-block error">', '</span>'); ?>
 				</div>
+				<div class="form-group">
+					<label>Beban Angkut (Kilogram)</label>
+					<input class="form-control" type="text" name="beban_angkut" placeholder="Beban Angkut" value="<?php echo set_value('beban_angkut') ?>">
+					<?php echo form_error('beban_angkut', '<span class="help-block error">', '</span>'); ?>
+				</div>
 				<input type="hidden" name="transportasi_id" value="<?php echo $this->uri->segment(3) ?>">
 			</div>
 		</div>

@@ -34,7 +34,7 @@
 					<td><?php echo ucfirst($value['jenis']); ?></td>
 					<td><?php echo $value['nomor_plat']; ?></td>
 					<td><?php echo $value['beban_angkut']; ?> KG</td>
-					<td><?php echo $value['pengemudi']; ?></td>
+					<td><?php echo view_user($value['pengemudi'])['nama_lengkap']; ?></td>
 					<td>
 						<?php
 						switch ($value['status']) {
