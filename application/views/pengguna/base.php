@@ -114,7 +114,7 @@
 					<li><a href="<?php echo base_url('transportasi') ?>"><i class="fa fa-car"></i> <span>Transportasi</span></a></li>
 					<li><a href="<?php echo base_url('setting') ?>"><i class="fa fa-cogs"></i> <span>Pengaturan</span></a></li>
 				<?php } ?>
-				<?php if (aktif_sesi()['role'] == 'admin' OR aktif_sesi()['role'] == 'petani') {?>
+				<?php if (aktif_sesi()['role'] == 'petani') {?>
 					<li class="header">Transportasi</li>
 					<li><a href="<?php echo base_url('transportasi/pesan') ?>"><i class="fa fa-truck"></i> <span>Pesan Transportasi</span></a></li>
 					<li><a href="<?php echo base_url('transportasi/pesanan_saya') ?>"><i class="fa fa-shopping-cart"></i> <span>Pesanan Saya</span></a></li>
