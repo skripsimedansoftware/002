@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jun 15, 2020 at 04:16 PM
--- Server version: 5.5.65-MariaDB
--- PHP Version: 7.3.17
+-- Host: 127.0.0.1
+-- Generation Time: Jun 18, 2020 at 05:14 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `jasa-angkutan-kelapa-sawit`
+-- Database: `skripsi_2020`
 --
 
 -- --------------------------------------------------------
@@ -64,7 +65,7 @@ CREATE TABLE `pesanan_transportasi` (
   `upah_angkut` double DEFAULT NULL,
   `penjemputan` tinytext NOT NULL,
   `tanggal_pemesanan` datetime NOT NULL,
-  `catatan` tinytext,
+  `catatan` tinytext DEFAULT NULL,
   `status` enum('pesan','konfirmasi','batal','proses','selesai') NOT NULL DEFAULT 'pesan'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -113,6 +114,14 @@ ALTER TABLE `pengguna`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pesanan_transportasi`
+--
+ALTER TABLE `pesanan_transportasi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pesanan_transportasi_ibfk_1` (`transportasi_id`),
+  ADD KEY `pesanan_transportasi_ibfk_2` (`pemesan`);
+
+--
 -- Indexes for table `transportasi`
 --
 ALTER TABLE `transportasi`
@@ -128,6 +137,12 @@ ALTER TABLE `transportasi`
 --
 ALTER TABLE `pengguna`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `pesanan_transportasi`
+--
+ALTER TABLE `pesanan_transportasi`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transportasi`
@@ -152,6 +167,7 @@ ALTER TABLE `pesanan_transportasi`
 ALTER TABLE `transportasi`
   ADD CONSTRAINT `transportasi_ibfk_1` FOREIGN KEY (`pengemudi`) REFERENCES `pengguna` (`id`);
 COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
