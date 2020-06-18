@@ -20,7 +20,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
 	<div class="login-logo">
-		<a href="<?php echo base_url('assets/pengguna/') ?>"><b><?php echo APP_INFO['name']; ?></b></a>
+		<a href="<?php echo base_url('assets/pengguna/') ?>">Selamat datang di pengangkutan kelapa sawit <b>CV. Simatahari</b></a>
 	</div>
 	<div class="login-box-body">
 		<p class="login-box-msg">Masuk untuk memulai sesi anda</p>
