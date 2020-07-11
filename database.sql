@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2020 at 05:14 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.27
+-- Generation Time: Jul 11, 2020 at 08:03 AM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.3.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -21,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `skripsi_2020`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `akun_bank`
+--
+
+CREATE TABLE `akun_bank` (
+  `id` int(4) NOT NULL,
+  `pengguna_id` int(4) NOT NULL,
+  `nomor_rekening` int(20) NOT NULL,
+  `nama_pemilik` varchar(20) NOT NULL,
+  `bank_penerbit` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -62,7 +75,9 @@ CREATE TABLE `pesanan_transportasi` (
   `nama_lengkap` varchar(80) NOT NULL,
   `seluler` varchar(15) NOT NULL,
   `jadwal_angkut` datetime NOT NULL,
+  `penjualan` double DEFAULT NULL,
   `upah_angkut` double DEFAULT NULL,
+  `total_pendapatan` double DEFAULT NULL,
   `penjemputan` tinytext NOT NULL,
   `tanggal_pemesanan` datetime NOT NULL,
   `catatan` tinytext DEFAULT NULL,
@@ -85,8 +100,8 @@ CREATE TABLE `setting` (
 --
 
 INSERT INTO `setting` (`name`, `value`) VALUES
-('upah_angkut', '4000'),
-('harga_sawit', '2000');
+('upah_angkut', '150'),
+('harga_sawit', '1000');
 
 -- --------------------------------------------------------
 
@@ -106,6 +121,13 @@ CREATE TABLE `transportasi` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `akun_bank`
+--
+ALTER TABLE `akun_bank`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pengguna_id` (`pengguna_id`);
 
 --
 -- Indexes for table `pengguna`
@@ -133,6 +155,12 @@ ALTER TABLE `transportasi`
 --
 
 --
+-- AUTO_INCREMENT for table `akun_bank`
+--
+ALTER TABLE `akun_bank`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
@@ -153,6 +181,12 @@ ALTER TABLE `transportasi`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `akun_bank`
+--
+ALTER TABLE `akun_bank`
+  ADD CONSTRAINT `akun_bank_ibfk_1` FOREIGN KEY (`pengguna_id`) REFERENCES `pengguna` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pesanan_transportasi`

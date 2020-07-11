@@ -223,6 +223,10 @@ class Transportasi extends CI_Controller {
 				{
 					$pesanan = $this->pesanan_transportasi_model->view($pesanan_id);
 
+					$penjualan = (!empty($this->input->post('beban_angkut')))?$this->setting_model->get_harga_sawit()['value']*$this->input->post('beban_angkut'):$pesanan['penjualan'];
+					$upah_angkut = (!empty($this->input->post('beban_angkut')))?$this->setting_model->get_upah_angkut()['value']*$this->input->post('beban_angkut'):$pesanan['upah_angkut'];
+					$total_pendapatan = (!empty($this->input->post('beban_angkut')))?($this->setting_model->get_harga_sawit()['value']*$this->input->post('beban_angkut'))-$upah_angkut:$pesanan['total_pendapatan'];
+
 					$data = array(
 						'transportasi_id' => $pesanan['transportasi_id'],
 						'pemesan' => $pesanan['pemesan'],
@@ -231,7 +235,9 @@ class Transportasi extends CI_Controller {
 						'jadwal_angkut' => nice_date($this->input->post('jadwal_angkut'), 'Y-m-d H:i:s'),
 						'penjemputan' => $this->input->post('penjemputan'),
 						'catatan' => $this->input->post('catatan'),
-						'upah_angkut' =>  (!empty($this->input->post('beban_angkut')))?$this->setting_model->get_upah_angkut()['value']*$this->input->post('beban_angkut'):$pesanan['status'],
+						'penjualan' => $penjualan,
+						'upah_angkut' =>  $upah_angkut,
+						'total_pendapatan' =>  $total_pendapatan,
 						'status' => $pesanan['status']
 					);
 

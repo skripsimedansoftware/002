@@ -3,6 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pengguna extends CI_Controller {
 
+	protected $bank_penerbit = array(
+		'Mandiri', 'BRI', 'Bank Sumut'
+	);
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -89,6 +93,7 @@ class Pengguna extends CI_Controller {
 	{
 		$data['sub_judul'] = 'Profil Pengguna';
 		$data['pengguna'] = $this->pengguna_model->view($pengguna_id?$pengguna_id:$this->session->userdata('pengguna'));
+		$data['akun_bank'] = $this->akun_bank_model->get_where(array('pengguna_id' => $pengguna_id));
 		$this->template->pengguna('pengguna/profil', $data);
 	}
 
@@ -198,6 +203,65 @@ class Pengguna extends CI_Controller {
 		{
 			$data['sub_judul'] = 'Pendaftaran';
 			$this->load->view('pengguna/daftar', $data);
+		}
+	}
+
+	public function akun_bank($id = NULL)
+	{
+		$data['sub_judul'] = 'Nomor Rekening';
+		if (!empty($id))
+		{
+			$data['akun_bank'] = $this->akun_bank_model->get_where(array('id' => $id));
+			$this->template->pengguna('akun_bank/lihat', $data);
+		}
+		else
+		{
+			$data['akun_bank'] = $this->akun_bank_model->get_where(array('pengguna_id' => aktif_sesi()['id']));
+			$this->template->pengguna('akun_bank/list', $data);
+		}
+	}
+
+	public function tambah_akun_bank()
+	{
+		$data['sub_judul'] = 'Tambah Nomor Rekening';
+		$data['bank_penerbit'] = $this->bank_penerbit;
+		if ($this->input->method(TRUE) == 'POST')
+		{
+			$this->akun_bank_model->create(array(
+				'pengguna_id' => aktif_sesi()['id'],
+				'nomor_rekening' => $this->input->post('nomor_rekening'),
+				'nama_pemilik' => $this->input->post('nama_pemilik'),
+				'bank_penerbit' => $this->input->post('bank_penerbit')
+			));
+
+			$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Nomor rekening telah ditambahkan'));
+			redirect(base_url('pengguna/akun_bank'), 'refresh');
+		}
+		else
+		{
+			$this->template->pengguna('akun_bank/tambah', $data);
+		}
+	}
+
+	public function sunting_akun_bank($id = NULL)
+	{
+		if ($this->input->method(TRUE) == 'POST')
+		{
+			$this->akun_bank_model->update(array(
+				'nomor_rekening' => $this->input->post('nomor_rekening'),
+				'nama_pemilik' => $this->input->post('nama_pemilik'),
+				'bank_penerbit' => $this->input->post('bank_penerbit')
+			), array('id' => $id));
+
+			$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Nomor rekening telah diperbaharui'));
+			redirect(base_url('pengguna/akun_bank'), 'refresh');
+		}
+		else
+		{
+			$data['sub_judul'] = 'Sunting Nomor Rekening';
+			$data['bank_penerbit'] = $this->bank_penerbit;
+			$data['akun_bank'] = $this->akun_bank_model->view($id);
+			$this->template->pengguna('akun_bank/sunting', $data);
 		}
 	}
 

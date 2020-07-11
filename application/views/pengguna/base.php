@@ -116,8 +116,10 @@
 				<?php } ?>
 				<?php if (aktif_sesi()['role'] == 'petani') {?>
 					<li class="header">Transportasi</li>
+					<li><a href="<?php echo base_url('pengguna/akun_bank') ?>"><i class="fa fa-bank"></i> <span>Akun Bank</span></a></li>
 					<li><a href="<?php echo base_url('transportasi/pesan') ?>"><i class="fa fa-truck"></i> <span>Pesan Transportasi</span></a></li>
 					<li><a href="<?php echo base_url('transportasi/pesanan_saya') ?>"><i class="fa fa-shopping-cart"></i> <span>Pesanan Saya</span></a></li>
+					<li><a href="https://api.whatsapp.com/send?phone=082167368585&text=Hai admin, %0ASaya butuh bantuan"><i class="fa fa-whatsapp"></i> <span>Hubungi Admin (WhatsApp)</span></a></li>
 				<?php } ?>
 			</ul>
 		</section>

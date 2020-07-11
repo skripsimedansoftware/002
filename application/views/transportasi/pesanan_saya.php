@@ -23,7 +23,9 @@
 					<th>Kontak</th>
 					<th>Jadwal Angkut</th>
 					<th>Lokasi Angkut</th>
+					<th>Penjualan</th>
 					<th>Upah Angkut</th>
+					<th>Total Pendapatan</th>
 					<th>Catatan</th>
 					<th>Status</th>
 					<th>Opsi</th>
@@ -38,7 +40,9 @@
 						<td><?php echo $data['seluler'] ?></td>
 						<td><?php echo lang('cal_'.strtolower(nice_date($data['jadwal_angkut'], 'l'))).', '.nice_date($data['jadwal_angkut'], 'd-m-Y | H:i A') ?></td>
 						<td><?php echo $data['penjemputan'] ?></td>
+						<td>Rp.<?php echo number_format($data['penjualan'], 0, ',', '.') ?></td>
 						<td>Rp.<?php echo number_format($data['upah_angkut'], 0, ',', '.') ?></td>
+						<td>Rp.<?php echo number_format($data['total_pendapatan'], 0, ',', '.') ?></td>
 						<td><?php echo $data['catatan'] ?></td>
 						<td>
 							<?php
