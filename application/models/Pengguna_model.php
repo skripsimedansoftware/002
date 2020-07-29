@@ -120,15 +120,16 @@ class Pengguna_model extends CI_Model {
 	public function sign_in($identity, $password)
 	{
 		$this->db->where('email', $identity);
-		$this->db->where('password', md5($password));
-		$this->db->or_where('username', $identity);
-		$this->db->or_where('seluler', $identity);
-
+		$this->db->or_where('username =', $identity, TRUE);
+		$this->db->or_where('seluler =', $identity, TRUE);
 		$pengguna = $this->db->get('pengguna');
 
 		if ($pengguna->num_rows() >= 1)
 		{
-			return $pengguna->row_array();
+			if ($pengguna->row()->password == md5($password))
+			{
+				return $pengguna->row_array();
+			}
 		}
 
 		return FALSE;
