@@ -2,7 +2,7 @@
 	<div class="box-header with-border">
 		<h3 class="box-title"><?php echo $sub_judul; ?></h3>
 	</div>
-	<div class="box-body">
+	<div class="box-body" style="overflow-y: scroll;">
 		<?php 
 		if ($this->session->userdata('flash_message'))
 		{
