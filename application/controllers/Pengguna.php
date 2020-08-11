@@ -276,30 +276,30 @@ class Pengguna extends CI_Controller {
 			{
 				$masuk = $this->pengguna_model->sign_in($this->input->post('identity'), $this->input->post('password'));
 
-				switch ($masuk['status'])
+				if (!empty($masuk))
 				{
-					case 'aktif':
-						if ($masuk)
-						{
+					switch ($masuk['status'])
+					{
+						case 'aktif':
 							$this->session->set_userdata('pengguna', $masuk['id']);
 							redirect(base_url(),'refresh');
-						}
-						else
-						{
-							$this->session->set_flashdata('masuk', 'Email / Kata Sandi yang digunakan tidak sesuai');
-							redirect(base_url('pengguna/masuk'),'refresh');
-						}
-					break;
+						break;
 
-					case 'non-aktif':
-						$this->session->set_flashdata('masuk', 'Akun anda tidak aktif, silahkan hubungi admin');
-						redirect(base_url('pengguna/masuk'),'refresh');
-					break;
-					
-					default:
-						$this->session->set_flashdata('masuk', 'Akun anda diblokir, silahkan hubungi admin');
-						redirect(base_url('pengguna/masuk'),'refresh');
-					break;
+						case 'non-aktif':
+							$this->session->set_flashdata('masuk', 'Akun anda tidak aktif, silahkan hubungi admin');
+							redirect(base_url('pengguna/masuk'),'refresh');
+						break;
+						
+						default:
+							$this->session->set_flashdata('masuk', 'Akun anda diblokir, silahkan hubungi admin');
+							redirect(base_url('pengguna/masuk'),'refresh');
+						break;
+					}
+				}
+				else
+				{
+					$this->session->set_flashdata('masuk', 'Email / Kata Sandi yang digunakan tidak sesuai');
+					redirect(base_url('pengguna/masuk'),'refresh');
 				}
 			}
 			else
