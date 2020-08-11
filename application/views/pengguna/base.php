@@ -37,6 +37,10 @@
 		.help-block.error {
 			color: red;
 		}
+
+		.box-body {
+			overflow-y: scroll;
+		}
 	</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
