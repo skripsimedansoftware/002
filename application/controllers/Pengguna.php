@@ -265,6 +265,13 @@ class Pengguna extends CI_Controller {
 		}
 	}
 
+	public function hapus_akun_bank($id = NULL)
+	{
+		$this->akun_bank_model->delete(array('id' => $id));
+		$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Nomor rekening telah dihapus'));
+		redirect(base_url('pengguna/akun_bank') ,'refresh');
+	}
+
 	public function masuk()
 	{
 		if ($this->input->method(TRUE) == 'POST')
