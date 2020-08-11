@@ -7,19 +7,22 @@
 			<div class="col-lg-6">
 				<div class="form-group">
 					<label>Nomor Rekening</label>
-					<input class="form-control" type="text" name="nomor_rekening" placeholder="Nomor Rekening" value="">
+					<input class="form-control" type="text" name="nomor_rekening" placeholder="Nomor Rekening" value="<?php echo set_value('nomor_rekening') ?>">
+					<?php echo form_error('nomor_rekening', '<span class="help-block error">', '</span>'); ?>
 				</div>
 				<div class="form-group">
 					<label>Bank Penerbit</label>
 					<select class="form-control" name="bank_penerbit">
 						<?php foreach ($bank_penerbit as $value) { ?>
-						    <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
+						    <option value="<?php echo $value; ?>" <?php echo set_value('nomor_rekening') == $value?'selected':'' ?>><?php echo $value; ?></option>
 						<?php } ?>
 					</select>
+					<?php echo form_error('bank_penerbit', '<span class="help-block error">', '</span>'); ?>
 				</div>
 				<div class="form-group">
 					<label>Nama Pemilik</label>
-					<input class="form-control" type="text" name="nama_pemilik" placeholder="Nama Pemilik" value="">
+					<input class="form-control" type="text" name="nama_pemilik" placeholder="Nama Pemilik" value="<?php echo set_value('nama_pemilik') ?>">
+					<?php echo form_error('nama_pemilik', '<span class="help-block error">', '</span>'); ?>
 				</div>
 			</div>
 		</div>

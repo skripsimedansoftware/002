@@ -227,15 +227,26 @@ class Pengguna extends CI_Controller {
 		$data['bank_penerbit'] = $this->bank_penerbit;
 		if ($this->input->method(TRUE) == 'POST')
 		{
-			$this->akun_bank_model->create(array(
-				'pengguna_id' => aktif_sesi()['id'],
-				'nomor_rekening' => $this->input->post('nomor_rekening'),
-				'nama_pemilik' => $this->input->post('nama_pemilik'),
-				'bank_penerbit' => $this->input->post('bank_penerbit')
-			));
+			$this->form_validation->set_rules('nomor_rekening', 'Nomor Rekening', 'trim|integer|required');
+			$this->form_validation->set_rules('nama_pemilik', 'Nama Pemilik', 'trim|required');
+			$this->form_validation->set_rules('bank_penerbit', 'Bank Penerbit', 'trim|in_list['.implode(',', $this->bank_penerbit).']|required');
 
-			$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Nomor rekening telah ditambahkan'));
-			redirect(base_url('pengguna/akun_bank'), 'refresh');
+			if ($this->form_validation->run() == TRUE)
+			{
+				$this->akun_bank_model->create(array(
+					'pengguna_id' => aktif_sesi()['id'],
+					'nomor_rekening' => $this->input->post('nomor_rekening'),
+					'nama_pemilik' => $this->input->post('nama_pemilik'),
+					'bank_penerbit' => $this->input->post('bank_penerbit')
+				));
+
+				$this->session->set_flashdata('flash_message', array('status' => 'success', 'message' => 'Nomor rekening telah ditambahkan'));
+				redirect(base_url('pengguna/akun_bank'), 'refresh');
+			}
+			else
+			{
+				$this->template->pengguna('akun_bank/tambah', $data);
+			}
 		}
 		else
 		{
